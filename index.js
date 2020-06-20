@@ -23,6 +23,7 @@ app.use(express.json());
 // Routes Middlewares
 app.use('/user', authRoute);
 
-app.listen(5000, () => {
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
   console.log("App listening on 5000");
 })
