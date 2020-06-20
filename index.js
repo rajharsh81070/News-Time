@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const passport = require("passport");
 
 dotenv.config();
 
@@ -19,6 +20,12 @@ const authRoute = require('./routes/auth');
 
 // Middleware
 app.use(express.json());
+
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require("./config/passport")(passport);
 
 // Routes Middlewares
 app.use('/user', authRoute);
