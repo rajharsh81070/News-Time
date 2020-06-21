@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const passport = require("passport");
 
+// Import Routes
+const authRoute = require('./routes/auth');
+
 dotenv.config();
 
 const app = express();
@@ -15,9 +18,6 @@ mongoose.connect(process.env.DB_CONNECT,
   }
 );
 
-// Import Routes
-const authRoute = require('./routes/auth');
-
 // Middleware
 app.use(express.json());
 
@@ -28,7 +28,7 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Routes Middlewares
-app.use('/user', authRoute);
+app.use('/auth', authRoute);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
