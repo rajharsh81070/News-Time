@@ -5,7 +5,7 @@ const passport = require("passport");
 const cors = require('cors');
 
 // Import Routes
-const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
 const newsRoute = require('./routes/news');
 
 dotenv.config();
@@ -31,8 +31,8 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Routes Middlewares
-app.use('/', newsRoute);
-app.use('/auth', authRoute);
+app.use('/news', newsRoute);
+app.use('/user', userRoute);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

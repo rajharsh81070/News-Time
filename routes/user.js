@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const passport = require('passport');
 // User Model
 const User = require('../model/User');
 
@@ -32,11 +32,12 @@ router.post('/register', async (req, res) => {
     email: req.body.email,
     password: hashedPassword
   });
+
   try {
     // await user.save();
     const newUser = await user.save();
     console.log(newUser);
-    res.json({ id: user._id });
+    res.status(200).json({ success: true });
   } catch (err) {
     // console.log(err);
     res.status(400).json(err);
@@ -67,8 +68,18 @@ router.post('/login', async (req, res) => {
   // Assign a token.
   const token = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 31556926 });
   // res.json(token);
-  res.header('token', token).json({ token });
+  res.header('token', token).json(
+    {
+      success: true,
+      token: "Bearer " + token
+    });
 });
+
+router.get('/profile', passport.authenticate('jwt', { session: false }),
+  (req, res, next) => {
+    res.json({ success: true });
+  })
+
 
 
 module.exports = router;
