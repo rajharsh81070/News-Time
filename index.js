@@ -14,7 +14,7 @@ const app = express();
 
 // Connect to DB
 mongoose.connect(process.env.DB_CONNECT,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, },
   () => {
     console.log('Connected to DB!');
   }
@@ -37,4 +37,4 @@ app.use('/user', userRoute);
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("App listening on 5000");
-})
+});

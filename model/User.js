@@ -11,11 +11,37 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true,
+    match: /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
   },
   password: {
     type: String,
     required: true
+  },
+  country: {
+    type: String
+  },
+  state: {
+    type: String
+  },
+  city: {
+    type: String
+  },
+  bookmark: {
+    type: []
+  },
+  interests: {
+    type: []
+  },
+  phone: {
+    type: Number
+  },
+  DOB: {
+    type: Date
+  },
+  history: {
+    type: []
   },
   date: {
     type: Date,

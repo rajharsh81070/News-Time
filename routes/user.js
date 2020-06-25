@@ -12,7 +12,7 @@ const validateRegisterInput = require('../validation/register');
 router.post('/register', async (req, res) => {
   // Form Validation
   const { errors, isValid } = validateRegisterInput(req.body);
-
+  console.log(isValid);
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -37,7 +37,12 @@ router.post('/register', async (req, res) => {
     // await user.save();
     const newUser = await user.save();
     console.log(newUser);
-    res.status(200).json({ success: true });
+    res.status(200).json(
+      {
+        success: true,
+        message: "Registration Successful."
+      }
+    );
   } catch (err) {
     // console.log(err);
     res.status(400).json(err);
@@ -54,11 +59,11 @@ router.post('/login', async (req, res) => {
 
   // Check if the user is already registered.
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).json("Email or Password is wrong");
+  if (!user) return res.status(401).json("Email or Password is wrong");
 
   // Password is Correct
   const validPass = await bcrypt.compare(req.body.password, user.password);
-  if (!validPass) return res.status(400).json("Email or Password is wrong");
+  if (!validPass) return res.status(401).json("Email or Password is wrong");
 
   // Create JWT Payload
   const payload = {
@@ -77,8 +82,14 @@ router.post('/login', async (req, res) => {
 
 router.get('/profile', passport.authenticate('jwt', { session: false }),
   (req, res, next) => {
-    res.json({ success: true });
-  })
+    // console.log(req.user);
+    res.json(
+      {
+        success: true,
+        user: req.user,
+      }
+    );
+  });
 
 
 
