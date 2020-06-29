@@ -12,17 +12,24 @@ const validateRegisterInput = require('../validation/register');
 router.post('/register', async (req, res) => {
   // Form Validation
   const { errors, isValid } = validateRegisterInput(req.body);
-  console.log(isValid);
+  // console.log(isValid);
   if (!isValid) {
-    return res.status(400).json(errors);
+    return res.status(400).json({ errors, isValid, success: false });
   }
 
   // Check if the email is already registered.
   const emailExist = await User.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).json({ email: 'Email already Exists!' });
+  console.log(emailExist);
+  if (emailExist) return res.status(400).json(
+    {
+      isValid: true,
+      success: false,
+      message: 'Email already Exists!'
+    }
+  );
 
   // Hash Password
-  const salt = await bcrypt.genSalt(15);
+  const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
   // Create a New User
@@ -36,9 +43,10 @@ router.post('/register', async (req, res) => {
   try {
     // await user.save();
     const newUser = await user.save();
-    console.log(newUser);
+    // console.log(newUser);
     res.status(200).json(
       {
+        isValid: true,
         success: true,
         message: "Registration Successful."
       }
@@ -56,7 +64,6 @@ router.post('/login', async (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-
   // Check if the user is already registered.
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(401).json("Email or Password is wrong");

@@ -22,7 +22,7 @@ mongoose.connect(process.env.DB_CONNECT,
 
 // Middleware
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 // Passport middleware
 app.use(passport.initialize());
