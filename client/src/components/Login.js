@@ -1,15 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import IconButton from '@material-ui/core/IconButton';
-// import Input from '@material-ui/core/Input';
-// import FilledInput from '@material-ui/core/FilledInput';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-// import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,7 +10,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
 import * as userActions from '../actions/userActions';
+import { toast } from 'react-toastify';
 import userStore from '../stores/userStore';
+import NavBar from './NavBar';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,31 +43,32 @@ const useStyles = makeStyles((theme) => ({
 function Login(props) {
   const classes = useStyles();
   const [user, setUser] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [values, setValues] = useState({
-    password: '',
-    showPassword: false,
-  });
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(userStore.isAuthenticated());
 
   useEffect(() => {
     userStore.addChangeListener(onChange);
+    if (isAuthenticated === true) {
+      props.history.push('/');
+      toast.success('Login Successful');
+    }
+    if (!isSuccess && isValid) {
+      toast.error(errors);
+    }
     return () => userStore.removeChangeListener(onChange);
-  }, [])
+  }, [isSuccess, isValid, props.history, errors, isAuthenticated])
 
   function onChange() {
-    setIsAuthenticated(true);
+    const data = userStore.getErrors();
+    setIsAuthenticated(userStore.isAuthenticated());
+    if (data.hasOwnProperty('errors'))
+      setErrors(data.errors);
+    if (data.hasOwnProperty('isValid'))
+      setIsValid(data.isValid);
+    if (data.hasOwnProperty('success'))
+      setIsSuccess(data.success);
   }
 
   function handleFormChange(event) {
@@ -86,17 +78,16 @@ function Login(props) {
     setUser(updateData);
   }
 
-  function handleSubmit(event) {
+  function handleFormSubmit(event) {
     event.preventDefault();
-    debugger;
+    // debugger;
     userActions.loginUser(user);
-    if (isAuthenticated)
-      props.history.push('/register');
   }
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <NavBar />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -104,41 +95,36 @@ function Login(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form onChange={handleFormChange} onSubmit={handleSubmit} className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              name="password"
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={handleChange('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              labelWidth={100}
-            />
-          </FormControl>
+        <form onChange={handleFormChange} onSubmit={handleFormSubmit} className={classes.form} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                error={(!errors.hasOwnProperty('email') || errors.email.length === 0) ? false : true}
+                helperText={errors.email}
+                required={true}
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required={true}
+                error={(!errors.hasOwnProperty('password') || errors.password.length === 0) ? false : true}
+                helperText={errors.password}
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            </Grid>
+          </Grid>
           <Button
             type="submit"
             fullWidth
@@ -165,7 +151,7 @@ function Login(props) {
       {/* <Box mt={8}>
         <Copyright />
       </Box> */}
-    </Container>
+    </Container >
   );
 }
 

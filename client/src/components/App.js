@@ -4,6 +4,8 @@ import Register from './Register';
 import Login from './Login';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import HomePage from './HomePage';
+// import userStore from '../stores/userStore';
 
 function App() {
   return (
@@ -18,11 +20,14 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover />
-      <Switch>
-        {/* <Route path="/" exact component={HomePage} /> */}
-        <Route path="/register" exact component={Register} />
-        <Route path="/login" exact component={Login} />
-      </Switch>
+      <>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/register" exact component={Register} />
+          <Route path="/login" exact component={Login} />
+        </Switch>
+        {/* <Footer /> */}
+      </>
     </div>
   )
 }

@@ -3,9 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import Link from '@material-ui/core/Link';
+import NavBar from './NavBar';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -45,7 +43,7 @@ function Register(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    debugger;
+    // debugger;
     userStore.addChangeListener(onChange);
     if (isSuccess) {
       props.history.push('/login');
@@ -55,7 +53,7 @@ function Register(props) {
       toast.error(errors);
     }
     return () => userStore.removeChangeListener(onChange);
-  }, [isSuccess, isValid, props.history, message])
+  }, [isSuccess, isValid, props.history, message, errors])
 
   function onChange() {
     const data = userStore.getErrors();
@@ -63,8 +61,10 @@ function Register(props) {
       setErrors(data.errors);
     if (data.hasOwnProperty('message'))
       setMessage(data.message);
-    setIsValid(data.isValid);
-    setIsSuccess(data.success);
+    if (data.hasOwnProperty('isValid'))
+      setIsValid(data.isValid);
+    if (data.hasOwnProperty('success'))
+      setIsSuccess(data.success);
   }
 
   function handleChange(event) {
@@ -77,7 +77,7 @@ function Register(props) {
   }
 
   function handleSubmit(event) {
-    debugger;
+    // debugger;
     event.preventDefault();
     userActions.registerUser(user);
   }
@@ -85,6 +85,7 @@ function Register(props) {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <NavBar />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />

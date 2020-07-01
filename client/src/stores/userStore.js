@@ -4,16 +4,15 @@ import actionTypes from '../actions/actionTypes';
 
 const CHANGE_EVENT = 'change';
 
-// function setToken(token) {
-//   if (localStorage.getItem('token')) {
-//     localStorage.setItem('token', token);
-//   }
-// }
+function setToken(token) {
+  if (localStorage.getItem('token') === null) {
+    localStorage.setItem('token', token);
+  }
+}
 
-// function removeUser() {
-//   localStorage.removeItem('profile');
-//   localStorage.removeItem('token');
-// }
+function removeUser() {
+  localStorage.removeItem('token');
+}
 
 let _errors = {};
 // let isRegis
@@ -57,22 +56,23 @@ const store = new UserStore();
 Dispatcher.register(action => {
   switch (action.actionType) {
     case actionTypes.LOGIN_USER:
-      debugger;
-      console.log(action.payload);
-      // setToken(action.token);
+      // debugger;
+      // console.log(action.token);
+      setToken(action.token.token);
       store.emitChange();
       break;
     case actionTypes.LOGOUT_USER:
-      // removeUser();
+      // debugger;
+      removeUser();
       store.emitChange();
       break;
     case actionTypes.ERROR_MESSAGE:
-      debugger;
+      // debugger;
       _errors = action.message;
       store.emitChange();
       break;
     case actionTypes.USER_REGISTERED:
-      debugger;
+      // debugger;
       _errors = action.message;
       store.emitChange();
       break;

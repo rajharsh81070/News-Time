@@ -14,13 +14,13 @@ export function registerUser(data) {
     .then(data => data.json())
     .then(data => {
       if (!data.success) {
-        debugger;
+        // debugger;
         dispatcher.dispatch({
           actionType: actionTypes.ERROR_MESSAGE,
           message: data
         })
       } else {
-        debugger;
+        // debugger;
         dispatcher.dispatch({
           actionType: actionTypes.USER_REGISTERED,
           message: data
@@ -43,13 +43,28 @@ export function loginUser(data) {
   return fetch('http://localhost:5000/user/login', requestOptions)
     .then(data => data.json())
     .then(user => {
-      debugger;
-      dispatcher.dispatch({
-        actionType: actionTypes.LOGIN_USER,
-        payload: user
-      });
+      // debugger;
+      if (user.success) {
+        dispatcher.dispatch({
+          actionType: actionTypes.LOGIN_USER,
+          token: user
+        });
+      } else {
+        dispatcher.dispatch({
+          actionType: actionTypes.ERROR_MESSAGE,
+          message: user
+        });
+      }
     })
     .catch(err => {
       console.log(err);
     });
+}
+
+export function logoutUser() {
+  // debugger;
+  // localStorage.removeItem('token');
+  dispatcher.dispatch({
+    actionType: actionTypes.LOGOUT_USER
+  })
 }
