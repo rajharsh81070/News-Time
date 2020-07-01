@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,8 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
-import userActions from "../actions/userActions";
+import * as userActions from "../actions/userActions";
 import { toast } from 'react-toastify';
+import userStore from '../stores/userStore';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,35 +39,47 @@ const useStyles = makeStyles((theme) => ({
 function Register(props) {
   const [user, setUser] = useState({});
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState({});
+  const [isValid, setIsValid] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const classes = useStyles();
+
+  useEffect(() => {
+    debugger;
+    userStore.addChangeListener(onChange);
+    if (isSuccess) {
+      props.history.push('/login');
+      toast.success(message);
+    }
+    if (!isSuccess && isValid) {
+      toast.error(errors);
+    }
+    return () => userStore.removeChangeListener(onChange);
+  }, [isSuccess, isValid, props.history, message])
+
+  function onChange() {
+    const data = userStore.getErrors();
+    if (data.hasOwnProperty('errors'))
+      setErrors(data.errors);
+    if (data.hasOwnProperty('message'))
+      setMessage(data.message);
+    setIsValid(data.isValid);
+    setIsSuccess(data.success);
+  }
 
   function handleChange(event) {
     event.preventDefault();
     const { target } = event;
     const updateData = { ...user, [target.name]: target.value };
+    const updateErrorData = { ...errors, [target.name]: "" };
+    setErrors(updateErrorData);
     setUser(updateData);
   }
 
   function handleSubmit(event) {
+    debugger;
     event.preventDefault();
-    userActions.registerUser(user)
-      .then(data => data.json())
-      .then(data => {
-        // console.log(data);
-        if (!data.isValid) {
-          setErrors(data.errors);
-        }
-        else if (!data.success && data.isValid) {
-          toast.error(data.message);
-          setErrors({});
-        } else {
-          props.history.push('/login');
-          toast.success(data.message);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    userActions.registerUser(user);
   }
 
   return (

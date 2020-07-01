@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import AppDispatcher from '../appDispatcher';
+import Dispatcher from '../appDispatcher';
 import actionTypes from '../actions/actionTypes';
 
 const CHANGE_EVENT = 'change';
@@ -15,7 +15,10 @@ const CHANGE_EVENT = 'change';
 //   localStorage.removeItem('token');
 // }
 
-class UserStoreClass extends EventEmitter {
+let _errors = {};
+// let isRegis
+
+class UserStore extends EventEmitter {
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   }
@@ -43,11 +46,15 @@ class UserStoreClass extends EventEmitter {
     return localStorage.getItem('token');
   }
 
+  getErrors() {
+    return _errors;
+  }
+
 }
 
-const UserStore = new UserStoreClass();
+const store = new UserStore();
 
-AppDispatcher.register(action => {
+Dispatcher.register(action => {
   switch (action.actionType) {
     case actionTypes.LOGIN_USER:
       debugger;
@@ -59,9 +66,19 @@ AppDispatcher.register(action => {
       // removeUser();
       store.emitChange();
       break;
+    case actionTypes.ERROR_MESSAGE:
+      debugger;
+      _errors = action.message;
+      store.emitChange();
+      break;
+    case actionTypes.USER_REGISTERED:
+      debugger;
+      _errors = action.message;
+      store.emitChange();
+      break;
     default:
     // nothing to do here
   }
 });
 
-export default UserStore;
+export default store;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 // import Input from '@material-ui/core/Input';
@@ -20,8 +20,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link } from "react-router-dom";
-import userActions from '../actions/userActions';
-
+import * as userActions from '../actions/userActions';
+import userStore from '../stores/userStore';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,9 +49,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login() {
+function Login(props) {
   const classes = useStyles();
   const [user, setUser] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
@@ -69,6 +70,15 @@ function Login() {
     event.preventDefault();
   };
 
+  useEffect(() => {
+    userStore.addChangeListener(onChange);
+    return () => userStore.removeChangeListener(onChange);
+  }, [])
+
+  function onChange() {
+    setIsAuthenticated(true);
+  }
+
   function handleFormChange(event) {
     event.preventDefault();
     const { target } = event;
@@ -78,8 +88,10 @@ function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    debugger
+    debugger;
     userActions.loginUser(user);
+    if (isAuthenticated)
+      props.history.push('/register');
   }
 
   return (
