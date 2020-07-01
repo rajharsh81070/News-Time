@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
     {
       isValid: true,
       success: false,
-      message: 'Email already Exists!'
+      errors: 'Email already Exists!'
     }
   );
 
@@ -48,7 +48,7 @@ router.post('/register', async (req, res) => {
       {
         isValid: true,
         success: true,
-        message: "Registration Successful."
+        message: "Registration Successful!"
       }
     );
   } catch (err) {
@@ -67,17 +67,17 @@ router.post('/login', async (req, res) => {
   // Check if the user is already registered.
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.status(401).json({
-    isValid: false,
+    isValid: true,
     success: false,
-    message: "Email or Password is wrong"
+    errors: "Email or Password is wrong"
   });
 
   // Password is Correct
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.status(401).json({
-    isValid: false,
+    isValid: true,
     success: false,
-    message: "Email or Password is wrong"
+    errors: "Email or Password is wrong"
   });
 
   // Create JWT Payload
@@ -90,7 +90,7 @@ router.post('/login', async (req, res) => {
   // res.json(token);
   res.header('token', token).json(
     {
-      isValid: false,
+      isValid: true,
       success: true,
       token: "Bearer " + token
     });
