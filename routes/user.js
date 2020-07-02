@@ -92,6 +92,7 @@ router.post('/login', async (req, res) => {
     {
       isValid: true,
       success: true,
+      name: user.firstName,
       token: "Bearer " + token
     });
 });
