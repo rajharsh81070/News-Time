@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from './NavBar';
+import userStore from '../stores/userStore';
 
 function HomePage(props) {
+  const [name, setName] = useState(userStore.getName());
+
   return (
     <div>
-      <NavBar />
+      <NavBar name={name} />
       HomePage
     </div>
   );

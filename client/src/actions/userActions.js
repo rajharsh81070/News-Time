@@ -43,7 +43,7 @@ export function loginUser(data) {
   return fetch('http://localhost:5000/user/login', requestOptions)
     .then(data => data.json())
     .then(user => {
-      // debugger;
+      debugger;
       if (user.success) {
         dispatcher.dispatch({
           actionType: actionTypes.LOGIN_USER,

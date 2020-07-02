@@ -15,6 +15,7 @@ function removeUser() {
 }
 
 let _errors = {};
+let _name = "";
 // let isRegis
 
 class UserStore extends EventEmitter {
@@ -37,8 +38,8 @@ class UserStore extends EventEmitter {
     return false;
   }
 
-  getUser() {
-    return localStorage.getItem('profile');
+  getName() {
+    return _name;
   }
 
   getJWT() {
@@ -56,9 +57,10 @@ const store = new UserStore();
 Dispatcher.register(action => {
   switch (action.actionType) {
     case actionTypes.LOGIN_USER:
-      // debugger;
+      debugger;
       // console.log(action.token);
       setToken(action.token.token);
+      _name = action.token.name;
       store.emitChange();
       break;
     case actionTypes.LOGOUT_USER:

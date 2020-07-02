@@ -21,7 +21,14 @@ import { NavLink } from 'react-router-dom';
 import * as userActions from "../actions/userActions";
 import userStore from '../stores/userStore';
 import { toast } from 'react-toastify';
-
+import SearchBar from './SearchBar';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 
 const drawerWidth = 240;
 
@@ -85,6 +92,9 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     textTransform: "none"
+  },
+  searchbar: {
+    padding: theme.spacing(0, 12)
   }
 }));
 
@@ -92,6 +102,27 @@ function NavBar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openIcon, setOpenIcon] = React.useState(false);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpenIcon((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpenIcon(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpenIcon(false);
+    }
+  }
 
   const [loggedIn, setLoggedIn] = useState(userStore.isAuthenticated());
 
@@ -139,31 +170,69 @@ function NavBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} noWrap>
             <NavLink to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>NewsTime</NavLink>
           </Typography>
+          <div className={classes.searchbar} >
+            <SearchBar />
+          </div>
           {/* {console.log(loggedIn)} */}
           {loggedIn !== true ?
             <>
-              <Typography variant="h6">
+              <Typography variant="h6" >
                 <NavLink to="/login" style={{ padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>Login</NavLink>
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="h6" >
                 <NavLink to="/register" style={{ color: 'inherit', padding: theme.spacing(0, 1), textDecoration: 'inherit' }}>
                   Register
                 </NavLink>
               </Typography>
             </>
             :
-            <>
-              <Typography variant="h6">
+            <div>
+              <IconButton
+                ref={anchorRef}
+                aria-controls={openIcon ? 'menu-list-grow' : undefined}
+                aria-haspopup="true"
+                onClick={handleToggle}
+                aria-label="account of current user"
+                color="inherit"
+              >
+                <AccountCircle />
+                <Typography style={{ padding: theme.spacing(0, 1) }}  >
+                  {props.name}
+                </Typography>
+              </IconButton>
+              <Popper open={openIcon} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={handleClose}>
+                        <MenuList autoFocusItem={openIcon} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                          <MenuItem onClick={handleClose}>Profile</MenuItem>
+                          <MenuItem onClick={handleClose}>History</MenuItem>
+                          <MenuItem onClick={handleClose}>Interest</MenuItem>
+                          <MenuItem onClick={handleClose}>BookMark</MenuItem>
+                          <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
+            </div>
+          }
+          {/* <Typography variant="h6">
                 <NavLink to="/" style={{ padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>Profile</NavLink>
               </Typography>
               <Typography variant="h6">
-                <NavLink to="/logout" onClick={onLogoutClick} style={{ color: 'inherit', padding: theme.spacing(0, 1), textDecoration: 'inherit' }}>Logout
+                <NavLink onClick={onLogoutClick} style={{ color: 'inherit', padding: theme.spacing(0, 1), textDecoration: 'inherit' }}>Logout
             </NavLink>
-              </Typography>
-            </>}
+              </Typography> */}
+
           {/* <Button color="inherit">Login</Button>
           <Button color="inherit">Register</Button> */}
         </Toolbar>
@@ -199,7 +268,7 @@ function NavBar(props) {
       >
         <div className={classes.drawerHeader} />
       </main>
-    </div>
+    </div >
   );
 }
 
