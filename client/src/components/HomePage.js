@@ -9,6 +9,7 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
+import WeatherWidget from 'weather-widget-react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +42,13 @@ function HomePage(props) {
   return (
     <div>
       <NavBar name={name} />
+      <WeatherWidget
+        apiKey='7cc0a3060e58f17a24e70b46ad9ed851'
+        position='top-left'
+        location='London'
+        units='metric'
+        lang='eng'
+      />
       <Container fixed>
         <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />
       </Container>
