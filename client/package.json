@@ -13,8 +13,7 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-toastify": "^6.0.5",
-    "weather-widget-react": "^1.0.4"
+    "react-toastify": "^6.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,7 +36,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.10.4"
-  }
+  "devDependencies": {}
 }
