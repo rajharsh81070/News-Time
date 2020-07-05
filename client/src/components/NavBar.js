@@ -11,7 +11,7 @@ import {
   Divider
 } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import * as userActions from "../actions/userActions";
 import userStore from '../stores/userStore';
 import { toast } from 'react-toastify';
@@ -32,14 +32,15 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.down('lg')]: {
+      display: 'none',
       width: drawerWidth,
       flexShrink: 0,
     },
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('lg')]: {
       display: 'none',
     },
   },
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: 'none',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'block',
     },
   },
@@ -75,9 +76,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
-  },
-  root: {
-    display: 'flex',
   },
 }));
 
@@ -135,16 +133,16 @@ function NavBar(props) {
     <div>
       <List>
         {dummyCategories.map((text, index) => (
-          <>
+          <div key={text} >
             <Divider />
-            <ListItem button key={text}>
+            <ListItem button>
               <ListItemText primary={text} />
             </ListItem>
-          </>
+          </div>
         ))}
         <Divider />
       </List>
-    </div>
+    </div >
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -273,7 +271,7 @@ function NavBar(props) {
           <Typography variant="h6" className={classes.title} noWrap>
             <NavLink to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>NewsTime</NavLink>
           </Typography>
-          <SearchBar />
+          {props.location.pathname === '/' && <SearchBar />}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {loggedIn !== true ? withoutLogin : onLogin}
@@ -292,9 +290,9 @@ function NavBar(props) {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      <nav className={classes.drawer}>
+      {(props.location.pathname === '/') && <nav className={classes.drawer}>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
+        <Hidden lgUp={true} implementation="css">
           <Drawer
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -325,9 +323,9 @@ function NavBar(props) {
             {drawer}
           </Drawer>
         </Hidden>
-      </nav>
+      </nav>}
     </div >
   );
 }
 
-export default NavBar;
+export default withRouter(NavBar);

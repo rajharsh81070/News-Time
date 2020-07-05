@@ -4,7 +4,7 @@ class WeatherWidget extends React.PureComponent {
 
   render() {
     return (
-      <div style={{ paddingTop: '68px' }} >
+      <div style={{ paddingTop: '68px', paddingBottom: '21px' }} >
         <a className="weatherwidget-io" href="https://forecast7.com/en/28d6677d23/delhi/" data-label_1="DELHI" data-label_2="WEATHER" data-icons="Climacons Animated" data-theme="original" >DELHI WEATHER</a>
 
         {!function (d, s, id) {

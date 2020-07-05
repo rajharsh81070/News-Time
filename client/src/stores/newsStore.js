@@ -5,6 +5,7 @@ import actionTypes from '../actions/actionTypes';
 const CHANGE_EVENT = 'change';
 
 let _news = [];
+let isLoading = true;
 
 class NewsStore extends EventEmitter {
   addChangeListener(callback) {
@@ -23,6 +24,10 @@ class NewsStore extends EventEmitter {
     return _news;
   }
 
+  getLoading() {
+    return isLoading;
+  }
+
 }
 
 const store = new NewsStore();
@@ -31,6 +36,7 @@ AppDispatcher.register(action => {
   switch (action.actionType) {
     case actionTypes.GET_TOP_HEADLINES:
       _news = action.news;
+      isLoading = false;
       store.emitChange();
       break;
     default:
