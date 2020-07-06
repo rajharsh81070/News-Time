@@ -65,6 +65,12 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
+  titleMobile: {
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      display: 'block',
+    },
+  },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
@@ -259,7 +265,7 @@ function NavBar(props) {
         className={classes.appBar}
       >
         <Toolbar>
-          <IconButton
+          {props.location.pathname === '/' && <IconButton
             color="inherit"
             aria-label="Open drawer"
             edge="start"
@@ -267,10 +273,13 @@ function NavBar(props) {
             className={classes.menuButton}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton>}
           <Typography variant="h6" className={classes.title} noWrap>
             <NavLink to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>NewsTime</NavLink>
           </Typography>
+          {props.location.pathname !== '/' && <Typography variant="h6" className={classes.titleMobile} noWrap>
+            <NavLink to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>NewsTime</NavLink>
+          </Typography>}
           {props.location.pathname === '/' && <SearchBar />}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
