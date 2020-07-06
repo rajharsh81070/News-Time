@@ -3,14 +3,14 @@ import NavBar from './NavBar';
 import userStore from '../stores/userStore';
 import newsStore from '../stores/newsStore';
 import * as newsActions from '../actions/newsActions';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   CssBaseline,
   Typography,
   Container,
-  List,
-  ListItem,
-  Divider,
+  // List,
+  // ListItem,
+  // Divider,
   Box
 } from "@material-ui/core";
 import NewsCard from './NewsCard';
@@ -32,7 +32,7 @@ function HomePage(props) {
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
-  const [data, setData] = useState({
+  const [data] = useState({
     language: 'en',
     country: 'in',
   });
@@ -102,7 +102,8 @@ function HomePage(props) {
                   <NewsCard article={article} />
                 </div>
               );
-            })}
+            })
+        }
       </Container>
       <Box component="span">
         {/* {console.log(noOfPages)} */}
@@ -124,6 +125,7 @@ function HomePage(props) {
   return (
     <div>
       <CssBaseline />
+      {console.log(news.articles)}
       <NavBar name={name} />
       {(isLoading === true) ? isLoadingContainer : onLoadingContainer}
     </div >
