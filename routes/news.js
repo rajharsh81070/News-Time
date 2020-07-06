@@ -3,13 +3,14 @@ const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI('d2c71452ccd74a0b85906eeef9426f37');
 
 router.get('/topheadlines', (req, res) => {
+  // console.log(req.query);
   newsapi.v2.topHeadlines({
     language: req.query.language,
     country: req.query.country,
     category: req.query.category,
     sources: req.query.sources,
     q: req.query.q,
-    page: req.query.page
+    pageSize: 100
   })
     .then(response => {
       res.json(response);
@@ -28,7 +29,7 @@ router.get('/everything', (req, res) => {
     to: req.query.to,
     language: req.query.language,
     sortBy: req.query.sortBy,
-    page: req.query.page
+    pageSize: 100
   })
     .then(response => {
       res.json(response);
