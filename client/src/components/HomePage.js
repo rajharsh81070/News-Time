@@ -125,7 +125,6 @@ function HomePage(props) {
     <div>
       <CssBaseline />
       <NavBar name={name} />
-      {console.log(news.articles)}
       {(isLoading === true) ? isLoadingContainer : onLoadingContainer}
     </div >
   );
