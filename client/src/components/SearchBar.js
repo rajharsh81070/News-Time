@@ -48,20 +48,26 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchBar(props) {
   const classes = useStyles();
+  const { search, handleSearchChange, handleSearchSubmit } = props;
 
   return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
-      <InputBase
-        placeholder="Search…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
-        inputProps={{ 'aria-label': 'search' }}
-      />
+      <form onChange={handleSearchChange} onSubmit={handleSearchSubmit}>
+        <InputBase
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          autoFocus
+          name="search"
+          value={search || ''}
+          inputProps={{ 'aria-label': 'search' }}
+        />
+      </form>
     </div>
   );
 }

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('xl')]: {
       display: 'none',
     },
   },
@@ -86,12 +86,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NavBar(props) {
-  const dummyCategories = ['Hokusai', 'Hiroshige', 'Utamaro', 'Kuniyoshi', 'Yoshitoshi']
+  // const { search, handleSearchChange, handleSearchSubmit } = props;
+  const categories = ['Top Headlines', 'Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
   const classes = useStyles();
   const theme = useTheme();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [search, setSearch] = useState();
+
+  const handleSearchChange = (event) => {
+    event.preventDefault();
+    const updateData = event.target.value;
+    setSearch(updateData);
+  }
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    console.log(search);
+  }
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen)
@@ -136,17 +149,17 @@ function NavBar(props) {
   };
 
   const drawer = (
-    <div>
-      <List>
-        {dummyCategories.map((text, index) => (
-          <div key={text} >
+    <div style={{ paddingTop: '30px' }}>
+      <List aria-label="category">
+        {categories.map((text, index) => (
+          <div key={index}>
             <Divider />
-            <ListItem button>
+            <ListItem onClick={props.handleDataChange} divider button>
               <ListItemText primary={text} />
             </ListItem>
           </div>
         ))}
-        <Divider />
+        {/* <Divider /> */}
       </List>
     </div >
   );
@@ -280,7 +293,7 @@ function NavBar(props) {
           {props.location.pathname !== '/' && <Typography variant="h6" className={classes.titleMobile} noWrap>
             <NavLink to="/" style={{ color: 'inherit', textDecoration: 'inherit' }}>NewsTime</NavLink>
           </Typography>}
-          {props.location.pathname === '/' && <SearchBar />}
+          {props.location.pathname === '/' && <SearchBar search={search} handleSearchChange={handleSearchChange} handleSearchSubmit={handleSearchSubmit} />}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {loggedIn !== true ? withoutLogin : onLogin}
@@ -301,8 +314,9 @@ function NavBar(props) {
       {renderMobileMenu}
       {(props.location.pathname === '/') && <nav className={classes.drawer}>
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden lgUp={true} implementation="css">
+        <Hidden xsUp implementation="css">
           <Drawer
+            // style={{ color: "blue" }}
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}

@@ -68,7 +68,7 @@ const DialogContent = withStyles((theme) => ({
 // }))(MuiDialogActions);
 
 function ShareModal(props) {
-  const [open, setOpen] = React.useState(props.open);
+  const [open] = React.useState(props.open);
 
   // const handleClickOpen = () => {
   //   setOpen(true);

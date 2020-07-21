@@ -10,8 +10,8 @@ import {
   Container,
   // List,
   // ListItem,
-  // Divider,
-  Box
+  Divider,
+  Box,
 } from "@material-ui/core";
 import NewsCard from './NewsCard';
 import Pagination from "@material-ui/lab/Pagination";
@@ -32,10 +32,7 @@ function HomePage(props) {
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
-  const [data] = useState({
-    language: 'en',
-    country: 'in',
-  });
+  const [data] = useState(newsStore.getData());
   const [name] = useState(userStore.getName());
   const [news, setNews] = useState(newsStore.getNews());
   const [isLoading, setIsLoading] = useState(newsStore.getLoading());
@@ -44,12 +41,28 @@ function HomePage(props) {
     setPage(value);
   };
 
+  const handleDataChange = (event) => {
+    const { target } = event;
+    let updatedData = { ...data, category: target.innerText };
+    // console.log(data.category);
+    // console.log(updatedData.category);
+    if (data.category !== updatedData.category) {
+      if (updatedData.category === 'Top Headlines') {
+        updatedData.category = '';
+      }
+      newsStore.setData(updatedData);
+      setIsLoading(!isLoading);
+      newsActions.topHeadlines(updatedData);
+    }
+    // console.log(updatedData);
+  };
+
   useEffect(() => {
     newsStore.addChangeListener(onChange);
     if (news.length === 0)
       newsActions.topHeadlines(data);
     return () => newsStore.removeChangeListener(onChange);
-  }, [data, news.length, onChange])
+  }, [data, news.length])
 
   function onChange() {
     setNews(newsStore.getNews());
@@ -91,6 +104,9 @@ function HomePage(props) {
   const onLoadingContainer = (
     <>
       <Container style={{ paddingTop: '90px' }} fixed>
+        <Typography variant="h3" align='center' style={{ fontSize: '36px', fontWeight: '300', textDecoration: 'underline' }} gutterBottom={true}>
+          {news.category}
+        </Typography>
         {
           news.length !== 0
           &&
@@ -105,6 +121,7 @@ function HomePage(props) {
             })
         }
       </Container>
+      <Divider />
       <Box component="span">
         {/* {console.log(noOfPages)} */}
         <Pagination
@@ -112,6 +129,7 @@ function HomePage(props) {
           page={page}
           onChange={handleChange}
           defaultPage={1}
+          variant="outlined"
           color="primary"
           size="large"
           showFirstButton
@@ -124,9 +142,9 @@ function HomePage(props) {
 
   return (
     <div>
+      {/* {console.log(news)} */}
       <CssBaseline />
-      {console.log(news.articles)}
-      <NavBar name={name} />
+      <NavBar handleDataChange={handleDataChange} name={name} />
       {(isLoading === true) ? isLoadingContainer : onLoadingContainer}
     </div >
   );

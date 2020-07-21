@@ -6,6 +6,11 @@ const CHANGE_EVENT = 'change';
 
 let _news = [];
 let isLoading = true;
+let _data = {
+  language: 'en',
+  country: 'in',
+  category: '',
+}
 
 class NewsStore extends EventEmitter {
   addChangeListener(callback) {
@@ -28,13 +33,21 @@ class NewsStore extends EventEmitter {
     return isLoading;
   }
 
+  getData() {
+    return _data;
+  }
+
+  setData(updatedData) {
+    _data.category = updatedData.category;
+  }
+
 }
 
 const store = new NewsStore();
 
 AppDispatcher.register(action => {
   switch (action.actionType) {
-    case actionTypes.GET_TOP_HEADLINES:
+    case actionTypes.GET_TOP_HEADLINES_ALL:
       _news = action.news;
       isLoading = false;
       store.emitChange();
