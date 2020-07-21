@@ -23,6 +23,7 @@ router.get('/topheadlines', (req, res) => {
 router.get('/everything', (req, res) => {
   newsapi.v2.everything({
     q: req.query.q,
+    qInTitle: req.query.qInTitle,
     sources: req.query.sources,
     domains: req.query.domains,
     from: req.query.from,
