@@ -10,9 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import TimeAgo from 'timeago-react';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+// import FavoriteIcon from '@material-ui/icons/Favorite';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ShareModal from './ShareModal';
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,14 +97,14 @@ function NewsCard(props) {
         component="img"
         className={classes.cover}
         image={article.urlToImage || "https://www.brijeshdalmia.com/wp-content/uploads/2018/03/NEWS.png"}
-        title={article.author}
+        title={`Article By ${article.author || article.source.name}`}
         onError={(e) => {
           e.target.src = "https://www.brijeshdalmia.com/wp-content/uploads/2018/03/NEWS.png";
           e.target.onerror = null;
         }}
       />
       <CardContent className={classes.content}>
-        <Typography className={classes.title} component="h3" variant="h3">
+        <Typography title={article.description || article.title} className={classes.title} component="h3" variant="h3">
           {titleFunc(article.title)}
           <IconButton aria-label="open in new">
             <Link href={article.url} color="inherit" underline="none" target="_blank">
@@ -112,7 +113,9 @@ function NewsCard(props) {
           </IconButton>
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
-          {article.source.name}
+          <Link href={article.url.split('.com')[0] + '.com'} color="inherit" target="_blank">
+            {article.source.name}
+          </Link>
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
           <TimeAgo
@@ -121,8 +124,8 @@ function NewsCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing={true}>
-        <IconButton className={classes.controls} aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton className={classes.controls} aria-label="add to bookmark">
+          <BookmarkBorderIcon />
         </IconButton>
         <IconButton onClick={handleClickOpen} className={classes.controls} aria-label="share">
           <ShareIcon />
@@ -163,8 +166,8 @@ function NewsCard(props) {
           </Typography>
         </CardContent>
         <CardActions >
-          <IconButton edge='end' size='small' className={classes.controlsMobile} aria-label="add to favorites">
-            <FavoriteIcon />
+          <IconButton edge='end' size='small' className={classes.controlsMobile} aria-label="add to bookmark">
+            <BookmarkBorderIcon />
           </IconButton>
           <IconButton onClick={handleClickOpen} edge='end' className={classes.controlsMobile} component="span" aria-label="share">
             <ShareIcon />

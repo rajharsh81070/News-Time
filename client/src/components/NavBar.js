@@ -24,6 +24,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import CloseIcon from '@material-ui/icons/Close';
+import newsStore from '../stores/newsStore';
+import { searchArticles } from '../actions/newsActions'
 
 const drawerWidth = 240;
 
@@ -86,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NavBar(props) {
-  // const { search, handleSearchChange, handleSearchSubmit } = props;
+  const { isLoading, setIsLoading } = props;
   const categories = ['Top Headlines', 'Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology']
   const classes = useStyles();
   const theme = useTheme();
@@ -104,6 +106,11 @@ function NavBar(props) {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     console.log(search);
+    const searchData = newsStore.getSearchData();
+    const updatedData = { ...searchData, qInTitle: search };
+    setSearch('');
+    setIsLoading(!isLoading);
+    searchArticles(updatedData);
   }
 
   function handleDrawerToggle() {

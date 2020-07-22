@@ -46,6 +46,10 @@ function HomePage(props) {
     let updatedData = { ...data, category: target.innerText };
     // console.log(data.category);
     // console.log(updatedData.category);
+    if (data.category === '' && updatedData.category === 'Top Headlines') {
+      if (news.category === 'Top Headlines')
+        data.category = 'Top Headlines';
+    }
     if (data.category !== updatedData.category) {
       if (updatedData.category === 'Top Headlines') {
         updatedData.category = '';
@@ -108,43 +112,57 @@ function HomePage(props) {
           {news.category}
         </Typography>
         {
-          news.length !== 0
-          &&
-          news.articles
-            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((article, index) => {
-              return (
-                <div key={index} style={{ paddingBottom: '10px' }}>
-                  <NewsCard article={article} />
-                </div>
-              );
-            })
+          (news.articles && news.articles.length !== 0) ? (
+            news.articles
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((article, index) => {
+                return (
+                  <div key={index} style={{ paddingBottom: '10px' }}>
+                    <NewsCard article={article} />
+                  </div>
+                );
+              })
+          )
+            :
+            <Typography variant="h6" style={{ fontSize: '24px', fontWeight: '180' }} gutterBottom={true}>No Articles Found</Typography>
         }
       </Container>
-      <Divider />
-      <Box component="span">
-        {/* {console.log(noOfPages)} */}
-        <Pagination
-          count={Math.ceil(news.totalResults / itemsPerPage)}
-          page={page}
-          onChange={handleChange}
-          defaultPage={1}
-          variant="outlined"
-          color="primary"
-          size="large"
-          showFirstButton
-          showLastButton
-          classes={{ ul: classes.paginator }}
-        />
-      </Box>
+      {
+        (news.articles && news.articles.length !== 0) ? (
+          <>
+            <Divider />
+            <Box component="span">
+              {/* {console.log(noOfPages)} */}
+              <Pagination
+                count={(Math.ceil(news.totalResults / itemsPerPage)) > 10 ? 10 : Math.ceil(news.totalResults / itemsPerPage)}
+                page={page}
+                onChange={handleChange}
+                defaultPage={1}
+                variant="outlined"
+                color="primary"
+                size="large"
+                showFirstButton
+                showLastButton
+                classes={{ ul: classes.paginator }}
+              />
+            </Box>
+          </>
+        )
+          :
+          ''
+      }
     </>
   );
 
   return (
     <div>
-      {/* {console.log(news)} */}
+      {console.log(news)}
       <CssBaseline />
-      <NavBar handleDataChange={handleDataChange} name={name} />
+      <NavBar
+        isLoading={isLoading}
+        setIsLoading={setIsLoading} handleDataChange={handleDataChange}
+        name={name}
+      />
       {(isLoading === true) ? isLoadingContainer : onLoadingContainer}
     </div >
   );

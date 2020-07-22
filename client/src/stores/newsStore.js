@@ -12,6 +12,10 @@ let _data = {
   category: '',
 }
 
+let _searchData = {
+  language: 'en',
+}
+
 class NewsStore extends EventEmitter {
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
@@ -41,6 +45,13 @@ class NewsStore extends EventEmitter {
     _data.category = updatedData.category;
   }
 
+  getSearchData() {
+    return _searchData;
+  }
+
+  setSearchData(updatedData) {
+    _searchData.qInTitle = updatedData.qInTitle;
+  }
 }
 
 const store = new NewsStore();
@@ -48,6 +59,11 @@ const store = new NewsStore();
 AppDispatcher.register(action => {
   switch (action.actionType) {
     case actionTypes.GET_TOP_HEADLINES_ALL:
+      _news = action.news;
+      isLoading = false;
+      store.emitChange();
+      break;
+    case actionTypes.GET_SEARCH_RESULTS:
       _news = action.news;
       isLoading = false;
       store.emitChange();
