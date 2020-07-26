@@ -1,68 +1,107 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import {
+  Avatar,
+  // Button,
+  CssBaseline,
+  // TextField,
+  Grid,
+  Typography,
+  Container,
+  Paper,
+} from '@material-ui/core';
+import NavBar from './NavBar';
+import userStore from '../stores/userStore';
+import { getProfile } from "../actions/userActions";
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  grid: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'inline-table',
+      margin: 'auto'
+    },
+  },
+  avatar: {
+    width: theme.spacing(18),
+    height: theme.spacing(18),
     padding: theme.spacing(2),
-    margin: 'auto',
-    maxWidth: 500,
-  },
-  image: {
-    width: 128,
-    height: 128,
-  },
-  img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing(3)
+    },
   },
 }));
 
-export default function Profile() {
+function Profile(props) {
   const classes = useStyles();
+  const [profileInfo, setProfileInfo] = useState(userStore.getProfile());
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    userStore.addChangeListener(onChange);
+    if (profileInfo.length === undefined) {
+      getProfile();
+    }
+    if (error.length) {
+      props.history.push('/login');
+      toast.error(error);
+    }
+    return () => userStore.removeChangeListener(onChange);
+  }, [profileInfo.length, error.length, error, props.history])
+
+  function onChange() {
+    const data = userStore.getErrors();
+    if (data.hasOwnProperty('message')) {
+      setError(data.message);
+    }
+  }
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-          <Grid item>
-            <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src="/static/images/grid/complex.jpg" />
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1">
-                  Standard license
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Full resolution 1920x1080 • JPEG
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  ID: 1030114
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                  Remove
-                </Typography>
-              </Grid>
-            </Grid>
+    <>
+      {console.log(profileInfo)}
+      {/* {console.log(error)} */}
+      <CssBaseline />
+      <NavBar name={profileInfo.firstName} />
+      <Container style={{ paddingTop: '90px', paddingBlockEnd: '381px' }} component="main" maxWidth="md">
+        <Paper className={classes.paper} variant="elevation" elevation={24}>
+          <Grid className={classes.grid} container wrap="nowrap" spacing={3}>
             <Grid item>
-              <Typography variant="subtitle1">$19.00</Typography>
+              <Avatar alt="Remy Sharp" src={profileInfo.image || 'https://www.cmcaindia.org/wp-content/uploads/2015/11/default-profile-picture-gmail-2.png'} className={classes.avatar} />
+            </Grid>
+            <Grid item xs>
+              <Typography style={{ marginTop: '30px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                Email: {profileInfo.email}
+              </Typography>
+              <Typography style={{ marginTop: '5px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                Name: {`${profileInfo.firstName} ${profileInfo.lastName}`}
+              </Typography>
+              <Typography style={{ marginTop: '5px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                Country: {profileInfo.country}
+              </Typography>
+              <Typography style={{ marginTop: '5px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                State: {profileInfo.state}
+              </Typography>
+              <Typography style={{ marginTop: '5px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                City: {profileInfo.city}
+              </Typography>
+              <Typography style={{ marginTop: '5px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                Phone Number: {profileInfo.phone}
+              </Typography>
+              <Typography style={{ marginTop: '5px', paddingLeft: '30px', background: 'rgb(231, 231, 231)', borderRadius: '5px', width: '90%', marginBottom: '10px' }} color="inherit" variant='h5'>
+                Age: {profileInfo.age}
+              </Typography>
             </Grid>
           </Grid>
-        </Grid>
-      </Paper>
-    </div>
+          {/* <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '55vh' }} /> */}
+        </Paper>
+      </Container>
+    </>
   );
 }
+
+export default Profile;

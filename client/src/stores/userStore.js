@@ -18,6 +18,7 @@ function removeUser() {
 }
 
 let _errors = {};
+const _user = {};
 // let isRegis
 
 class UserStore extends EventEmitter {
@@ -46,6 +47,10 @@ class UserStore extends EventEmitter {
 
   getJWT() {
     return localStorage.getItem('token');
+  }
+
+  getProfile() {
+    return _user;
   }
 
   getErrors() {
@@ -79,6 +84,19 @@ Dispatcher.register(action => {
     case actionTypes.USER_REGISTERED:
       // debugger;
       _errors = action.message;
+      store.emitChange();
+      break;
+    case actionTypes.GET_PROFILE:
+      _user.image = action.user.image;
+      _user.firstName = action.user.firstName;
+      _user.firstName = action.user.firstName;
+      _user.lastName = action.user.lastName;
+      _user.email = action.user.email;
+      _user.country = action.user.country;
+      _user.state = action.user.state;
+      _user.city = action.user.city;
+      _user.age = action.user.age;
+      _user.image = action.user.image;
       store.emitChange();
       break;
     default:

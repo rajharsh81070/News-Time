@@ -68,3 +68,35 @@ export function logoutUser() {
     actionType: actionTypes.LOGOUT_USER
   })
 }
+
+export function getProfile() {
+  const requestOptions = {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Authorization': localStorage.getItem('token'),
+    }
+  };
+  return fetch('http://localhost:5000/user/profile', requestOptions)
+    .then(data => {
+      if (!data.ok) {
+        dispatcher.dispatch({
+          actionType: actionTypes.ERROR_MESSAGE,
+          message: {
+            message: data.statusText,
+          },
+        });
+      } else {
+        return data.json();
+      }
+    })
+    .then(user => {
+      dispatcher.dispatch({
+        actionType: actionTypes.GET_PROFILE,
+        user: user.user
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
