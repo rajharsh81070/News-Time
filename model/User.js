@@ -37,11 +37,8 @@ const userSchema = new mongoose.Schema({
   phone: {
     type: Number
   },
-  DOB: {
-    type: Date
-  },
-  history: {
-    type: []
+  age: {
+    type: Number
   },
   date: {
     type: Date,

@@ -99,10 +99,9 @@ router.post('/login', async (req, res) => {
 
 router.get('/profile', passport.authenticate('jwt', { session: false }),
   (req, res, next) => {
-    // console.log(req.user);
+    console.log(req);
     res.json(
       {
-        success: true,
         user: req.user,
       }
     );
