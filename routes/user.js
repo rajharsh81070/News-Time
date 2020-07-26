@@ -82,7 +82,8 @@ router.post('/login', async (req, res) => {
 
   // Create JWT Payload
   const payload = {
-    id: user._id
+    id: user._id,
+    name: user.firstName
   };
 
   // Assign a token.
@@ -92,7 +93,6 @@ router.post('/login', async (req, res) => {
     {
       isValid: true,
       success: true,
-      name: user.firstName,
       token: "Bearer " + token
     });
 });

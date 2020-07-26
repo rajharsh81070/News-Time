@@ -102,13 +102,22 @@ function HomePage(props) {
       <Typography style={{ paddingBottom: '10px' }}>
         <Skeleton variant="rect" width="auto" height={90} animation="pulse" />
       </Typography>
+      <Typography style={{ paddingBottom: '10px' }}>
+        <Skeleton variant="rect" width="auto" height={90} animation="pulse" />
+      </Typography>
+      <Typography style={{ paddingBottom: '10px' }}>
+        <Skeleton variant="rect" width="auto" height={90} animation="pulse" />
+      </Typography>
+      <Typography style={{ paddingBottom: '10px' }}>
+        <Skeleton variant="rect" width="auto" height={90} animation="pulse" />
+      </Typography>
     </Container>
   );
 
   const onLoadingContainer = (
     <>
-      <Container style={{ paddingTop: '90px' }} fixed>
-        <Typography variant="h3" align='center' style={{ fontSize: '36px', fontWeight: '300', textDecoration: 'underline' }} gutterBottom={true}>
+      <Container style={{ minHeight: '91vh', paddingTop: '90px' }} fixed>
+        <Typography variant="h3" align='center' style={{ fontSize: '36px', fontWeight: '300', textDecoration: 'underline', paddingBottom: '15px' }} gutterBottom={true}>
           {news.category}
         </Typography>
         {
@@ -117,7 +126,7 @@ function HomePage(props) {
               .slice((page - 1) * itemsPerPage, page * itemsPerPage)
               .map((article, index) => {
                 return (
-                  <div key={index} style={{ paddingBottom: '10px' }}>
+                  <div key={index} style={{ paddingBottom: '30px' }}>
                     <NewsCard article={article} />
                   </div>
                 );
@@ -146,6 +155,7 @@ function HomePage(props) {
                 classes={{ ul: classes.paginator }}
               />
             </Box>
+            <Divider />
           </>
         )
           :
@@ -156,7 +166,7 @@ function HomePage(props) {
 
   return (
     <div>
-      {console.log(news)}
+      {/* {console.log(name)} */}
       <CssBaseline />
       <NavBar
         isLoading={isLoading}

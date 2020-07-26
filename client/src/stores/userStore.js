@@ -1,21 +1,23 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../appDispatcher';
 import actionTypes from '../actions/actionTypes';
+import jwt_decode from "jwt-decode";
 
 const CHANGE_EVENT = 'change';
 
-function setToken(token) {
+function setToken(token, name) {
   if (localStorage.getItem('token') === null) {
     localStorage.setItem('token', token);
+    localStorage.setItem('name', name);
   }
 }
 
 function removeUser() {
   localStorage.removeItem('token');
+  localStorage.removeItem('name');
 }
 
 let _errors = {};
-let _name = "";
 // let isRegis
 
 class UserStore extends EventEmitter {
@@ -39,7 +41,7 @@ class UserStore extends EventEmitter {
   }
 
   getName() {
-    return _name;
+    return localStorage.getItem('name');
   }
 
   getJWT() {
@@ -49,7 +51,6 @@ class UserStore extends EventEmitter {
   getErrors() {
     return _errors;
   }
-
 }
 
 const store = new UserStore();
@@ -59,8 +60,10 @@ Dispatcher.register(action => {
     case actionTypes.LOGIN_USER:
       debugger;
       // console.log(action.token);
-      setToken(action.token.token);
-      _name = action.token.name;
+      const authToken = action.token.token;
+      const decoded = jwt_decode(authToken);
+      // console.log(decoded);
+      setToken(authToken, decoded.name);
       store.emitChange();
       break;
     case actionTypes.LOGOUT_USER:

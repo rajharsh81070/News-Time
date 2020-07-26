@@ -5,6 +5,8 @@ import Login from './Login';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import HomePage from './HomePage';
+import Profile from './Profile';
+import Footer from './Footer';
 // import userStore from '../stores/userStore';
 
 function App() {
@@ -24,8 +26,9 @@ function App() {
           <Route path="/" exact component={HomePage} />
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />
+          <Route path="/profile" exact component={Profile} />
         </Switch>
-        {/* <Footer /> */}
+        <Footer />
       </>
     </div>
   )

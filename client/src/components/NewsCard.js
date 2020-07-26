@@ -74,8 +74,8 @@ function NewsCard(props) {
   const titleFunc = (title) => {
     if (title && title.length !== 0) {
       let splitedString = title.split(' - ')[0];
-      if (splitedString.length > 60)
-        splitedString = splitedString.substring(0, 57) + '...';
+      if (splitedString.length > 54)
+        splitedString = splitedString.substring(0, 54) + '...';
 
       return splitedString;
     }
@@ -97,7 +97,7 @@ function NewsCard(props) {
         component="img"
         className={classes.cover}
         image={article.urlToImage || "https://www.brijeshdalmia.com/wp-content/uploads/2018/03/NEWS.png"}
-        title={`Article By ${article.author || article.source.name}`}
+        title={`Photo By ${article.author || article.source.name}`}
         onError={(e) => {
           e.target.src = "https://www.brijeshdalmia.com/wp-content/uploads/2018/03/NEWS.png";
           e.target.onerror = null;
@@ -151,21 +151,23 @@ function NewsCard(props) {
           />
         </Link>
         <CardContent>
-          <Link href={article.url} color="inherit" underline="none" target="_blank">
-            <Typography gutterBottom variant="h6" component="h6">
+          <Typography gutterBottom variant="h6" component="h6">
+            <Link href={article.url} color="inherit" underline="none" target="_blank">
               {titleFunc(article.title)}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
+            </Link>
+          </Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            <Link href={article.url.split('.com')[0] + '.com'} color="inherit" target="_blank">
               {article.source.name}
-            </Typography>
-          </Link>
+            </Link>
+          </Typography>
           <Typography variant="subtitle1" color="textSecondary">
             <TimeAgo
               datetime={dateTime}
             />
           </Typography>
         </CardContent>
-        <CardActions >
+        <CardActions style={{ paddingTop: '0', margin: '0' }}>
           <IconButton edge='end' size='small' className={classes.controlsMobile} aria-label="add to bookmark">
             <BookmarkBorderIcon />
           </IconButton>

@@ -256,8 +256,11 @@ function NavBar(props) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Divider />
         <MenuItem onClick={handleClose}>Interest</MenuItem>
+        <Divider />
         <MenuItem onClick={handleClose}>Bookmark</MenuItem>
+        <Divider />
         <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
       </Menu>
     </div>

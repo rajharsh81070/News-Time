@@ -6,7 +6,7 @@ import {
   TextField,
   Grid,
   Typography,
-  Container
+  Container,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
@@ -77,6 +77,8 @@ function Login(props) {
     event.preventDefault();
     const { target } = event;
     const updateData = { ...user, [target.name]: target.value };
+    const updateErrorData = { ...errors, [target.name]: "" };
+    setErrors(updateErrorData);
     setUser(updateData);
   }
 
@@ -87,7 +89,7 @@ function Login(props) {
   }
 
   return (
-    <Container style={{ paddingTop: '90px' }} component="main" maxWidth="xs">
+    <Container style={{ paddingTop: '90px', paddingBlockEnd: '381px' }} component="main" maxWidth="xs">
       <CssBaseline />
       <NavBar />
       <div className={classes.paper}>
