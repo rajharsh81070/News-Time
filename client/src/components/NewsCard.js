@@ -113,7 +113,7 @@ function NewsCard(props) {
           </IconButton>
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
-          <Link href={article.url.split('.com')[0] + '.com'} color="inherit" target="_blank">
+          <Link href={article.url.split('.com')[0] + '.com'} target="_blank">
             {article.source.name}
           </Link>
         </Typography>
@@ -157,7 +157,7 @@ function NewsCard(props) {
             </Link>
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            <Link href={article.url.split('.com')[0] + '.com'} color="inherit" target="_blank">
+            <Link href={article.url.split('.com')[0] + '.com'} target="_blank">
               {article.source.name}
             </Link>
           </Typography>

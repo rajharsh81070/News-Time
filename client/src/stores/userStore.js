@@ -18,8 +18,8 @@ function removeUser() {
 }
 
 let _errors = {};
-const _user = {};
-// let isRegis
+let _user = {};
+let isLoading = true;
 
 class UserStore extends EventEmitter {
   addChangeListener(callback) {
@@ -55,6 +55,10 @@ class UserStore extends EventEmitter {
 
   getErrors() {
     return _errors;
+  }
+
+  getIsLoading() {
+    return isLoading;
   }
 }
 
@@ -97,6 +101,7 @@ Dispatcher.register(action => {
       _user.city = action.user.city;
       _user.age = action.user.age;
       _user.image = action.user.image;
+      isLoading = false;
       store.emitChange();
       break;
     default:

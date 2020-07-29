@@ -46,17 +46,19 @@ function HomePage(props) {
     let updatedData = { ...data, category: target.innerText };
     // console.log(data.category);
     // console.log(updatedData.category);
-    if (data.category === '' && updatedData.category === 'Top Headlines') {
-      if (news.category === 'Top Headlines')
-        data.category = 'Top Headlines';
-    }
-    if (data.category !== updatedData.category) {
-      if (updatedData.category === 'Top Headlines') {
-        updatedData.category = '';
+    if (isLoading === false) {
+      if (data.category === '' && updatedData.category === 'Top Headlines') {
+        if (news.category === 'Top Headlines')
+          data.category = 'Top Headlines';
       }
-      newsStore.setData(updatedData);
-      setIsLoading(!isLoading);
-      newsActions.topHeadlines(updatedData);
+      if (data.category !== updatedData.category) {
+        if (updatedData.category === 'Top Headlines') {
+          updatedData.category = '';
+        }
+        newsStore.setData(updatedData);
+        setIsLoading(!isLoading);
+        newsActions.topHeadlines(updatedData);
+      }
     }
     // console.log(updatedData);
   };
@@ -133,7 +135,9 @@ function HomePage(props) {
               })
           )
             :
-            <Typography variant="h6" style={{ fontSize: '24px', fontWeight: '180' }} gutterBottom={true}>No Articles Found</Typography>
+            (isLoading === false ? <Typography variant="h6" style={{ fontSize: '24px', fontWeight: '180' }} gutterBottom={true}>No Articles Found</Typography>
+              :
+              isLoadingContainer)
         }
       </Container>
       {

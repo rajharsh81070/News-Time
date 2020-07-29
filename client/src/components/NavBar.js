@@ -8,7 +8,7 @@ import {
   MenuItem,
   CssBaseline,
   Menu,
-  Divider
+  Divider,
 } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import { NavLink, withRouter } from 'react-router-dom';
@@ -144,6 +144,7 @@ function NavBar(props) {
     // debugger;
     event.preventDefault();
     userActions.logoutUser();
+    props.history.push('/login');
     toast.info('Logout Successful!');
   }
 
@@ -154,6 +155,11 @@ function NavBar(props) {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleBookmarkClick = (event) => {
+    event.preventDefault();
+    props.history.push('/bookmark');
+  }
 
   const drawer = (
     <div style={{ paddingTop: '30px' }}>
@@ -213,7 +219,23 @@ function NavBar(props) {
         <NavLink to="/" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>Home</NavLink>
       </MenuItem>
       <Divider />
-      <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+      <MenuItem>
+        <NavLink to="/profile" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+          Profile
+        </NavLink>
+      </MenuItem>
+      <Divider />
+      <MenuItem>
+        <NavLink to="/" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+          Bookmark
+        </NavLink>
+      </MenuItem>
+      <Divider />
+      <MenuItem onClick={onLogoutClick}>
+        <div style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+          Logout
+        </div>
+      </MenuItem>
     </Menu>
   );
 
@@ -255,13 +277,23 @@ function NavBar(props) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem>
+          <NavLink to="/profile" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+            Profile
+        </NavLink>
+        </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>Interest</MenuItem>
+        <MenuItem>
+          <NavLink to="/" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+            Bookmark
+        </NavLink>
+        </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>Bookmark</MenuItem>
-        <Divider />
-        <MenuItem onClick={onLogoutClick}>Logout</MenuItem>
+        <MenuItem onClick={onLogoutClick}>
+          <div style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+            Logout
+        </div>
+        </MenuItem>
       </Menu>
     </div>
   );
