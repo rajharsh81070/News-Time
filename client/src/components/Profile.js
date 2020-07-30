@@ -18,7 +18,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import FormModal from './FormModal';
-import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -115,7 +114,6 @@ function Profile(props) {
     setOpen(false);
   };
 
-
   useEffect(() => {
     userStore.addChangeListener(onChange);
     // console.log(finalFormData.length);
@@ -137,6 +135,7 @@ function Profile(props) {
       }
     }
     return () => userStore.removeChangeListener(onChange);
+    // eslint-disable-next-line
   }, [profileInfo.length, error.length, error, props.history, url])
 
   function onChange() {

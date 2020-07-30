@@ -156,10 +156,10 @@ function NavBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleBookmarkClick = (event) => {
-    event.preventDefault();
-    props.history.push('/bookmark');
-  }
+  // const handleBookmarkClick = (event) => {
+  //   event.preventDefault();
+  //   props.history.push('/bookmark');
+  // }
 
   const drawer = (
     <div style={{ paddingTop: '30px' }}>
@@ -226,7 +226,7 @@ function NavBar(props) {
       </MenuItem>
       <Divider />
       <MenuItem>
-        <NavLink to="/" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+        <NavLink to="/bookmark" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
           Bookmark
         </NavLink>
       </MenuItem>
@@ -284,7 +284,7 @@ function NavBar(props) {
         </MenuItem>
         <Divider />
         <MenuItem>
-          <NavLink to="/" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
+          <NavLink to="/bookmark" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
             Bookmark
         </NavLink>
         </MenuItem>

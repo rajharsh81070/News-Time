@@ -120,3 +120,24 @@ export function updateProfile(data) {
       console.log(err);
     });
 }
+
+export function getBookmarks() {
+  const requestOptions = {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Authorization': localStorage.getItem('token'),
+    },
+  };
+  return fetch('http://localhost:5000/user/bookmarks', requestOptions)
+    .then(data => data.json())
+    .then(res => {
+      dispatcher.dispatch({
+        actionType: actionTypes.GET_BOOKMARKS,
+        bookmarks: res.bookmarks,
+      })
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}

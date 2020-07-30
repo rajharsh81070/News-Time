@@ -30,6 +30,7 @@ function removeUser() {
 let _errors = {};
 let _user = {};
 let isLoading = true;
+let bookmarks = [];
 
 class UserStore extends EventEmitter {
   addChangeListener(callback) {
@@ -69,6 +70,10 @@ class UserStore extends EventEmitter {
 
   getIsLoading() {
     return isLoading;
+  }
+
+  getBookmarks() {
+    return bookmarks;
   }
 }
 
@@ -114,6 +119,11 @@ Dispatcher.register(action => {
       _user.phone = action.user.phone;
       isLoading = false;
       updateName(action.user.firstName);
+      store.emitChange();
+      break;
+    case actionTypes.GET_BOOKMARKS:
+      isLoading = false;
+      bookmarks.push(...action.bookmarks);
       store.emitChange();
       break;
     default:
