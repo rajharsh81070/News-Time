@@ -100,3 +100,23 @@ export function getProfile() {
       console.log(err);
     });
 }
+
+export function updateProfile(data) {
+  const requestOptions = {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token'),
+    },
+    body: JSON.stringify(data)
+  };
+  return fetch('http://localhost:5000/user/profile', requestOptions)
+    .then(data => data.json())
+    .then(res => {
+      return res.success;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}

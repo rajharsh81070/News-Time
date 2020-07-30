@@ -8,8 +8,18 @@ const CHANGE_EVENT = 'change';
 function setToken(token, name) {
   if (localStorage.getItem('token') === null) {
     localStorage.setItem('token', token);
+  }
+}
+
+function setName(name) {
+  if (localStorage.getItem('name') === null) {
     localStorage.setItem('name', name);
   }
+}
+
+function updateName(name) {
+  localStorage.removeItem('name');
+  localStorage.setItem('name', name);
 }
 
 function removeUser() {
@@ -72,7 +82,8 @@ Dispatcher.register(action => {
       const authToken = action.token.token;
       const decoded = jwt_decode(authToken);
       // console.log(decoded);
-      setToken(authToken, decoded.name);
+      setToken(authToken);
+      setName(decoded.name);
       store.emitChange();
       break;
     case actionTypes.LOGOUT_USER:
@@ -91,7 +102,7 @@ Dispatcher.register(action => {
       store.emitChange();
       break;
     case actionTypes.GET_PROFILE:
-      _user.image = action.user.image;
+      _user.photo = action.user.photo;
       _user.firstName = action.user.firstName;
       _user.firstName = action.user.firstName;
       _user.lastName = action.user.lastName;
@@ -100,8 +111,9 @@ Dispatcher.register(action => {
       _user.state = action.user.state;
       _user.city = action.user.city;
       _user.age = action.user.age;
-      _user.image = action.user.image;
+      _user.phone = action.user.phone;
       isLoading = false;
+      updateName(action.user.firstName);
       store.emitChange();
       break;
     default:

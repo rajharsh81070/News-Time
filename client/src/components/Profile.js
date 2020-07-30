@@ -12,12 +12,13 @@ import {
 } from '@material-ui/core';
 import NavBar from './NavBar';
 import userStore from '../stores/userStore';
-import { getProfile } from "../actions/userActions";
+import * as userActions from "../actions/userActions";
 import { toast } from 'react-toastify';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import FormModal from './FormModal';
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -68,6 +69,8 @@ function Profile(props) {
   const [isLoading, setIsLoading] = useState(userStore.getIsLoading());
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = useState({});
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
 
   function handleChange(event) {
     event.preventDefault();
@@ -78,7 +81,30 @@ function Profile(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+    if (image) {
+      const data = new FormData();
+      data.append("file", image.photo);
+      data.append("upload_preset", "news-time");
+      data.append("cloud_name", 'dt54gdtmn');
+      fetch("https://api.cloudinary.com/v1_1/dt54gdtmn/image/upload", {
+        method: 'post',
+        body: data
+      })
+        .then(res => res.json())
+        .then(data => {
+          setUrl(data.url);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    } else if (formData.firstName || formData.lastName || formData.country || formData.state || formData.city || formData.age || formData.phone) {
+      const success = userActions.updateProfile(formData);
+      if (success) {
+        props.history.push('/');
+        toast.success('Profile Updated!!');
+      }
+    }
   }
 
   const handleOpen = () => {
@@ -92,15 +118,26 @@ function Profile(props) {
 
   useEffect(() => {
     userStore.addChangeListener(onChange);
+    // console.log(finalFormData.length);
     if (profileInfo.length === undefined) {
-      getProfile();
+      userActions.getProfile();
     }
     if (error.length && error === "Unauthorized") {
       props.history.push('/login');
       toast.error(error);
     }
+    if (url) {
+      const updatedData = { ...formData, photo: url };
+      setFormData(updatedData);
+      const success = userActions.updateProfile(updatedData);
+      if (success) {
+        props.history.push('/');
+        toast.success('Profile Updated!!');
+
+      }
+    }
     return () => userStore.removeChangeListener(onChange);
-  }, [profileInfo.length, error.length, error, props.history])
+  }, [profileInfo.length, error.length, error, props.history, url])
 
   function onChange() {
     const data = userStore.getErrors();
@@ -117,7 +154,7 @@ function Profile(props) {
     <Container style={{ paddingTop: '90px', paddingBlockEnd: '381px' }} component="main" maxWidth="md">
       <Paper className={classes.paper} variant="elevation" elevation={24}>
         <Grid className={classes.grid} >
-          <Grid style={{ alignSelf: 'center', display: 'flex', flexDirection: 'row' }} item>
+          <Grid style={{ alignSelf: 'center', display: 'flex', flexDirection: 'row', marginTop: '12px' }} item>
             <Avatar alt="Profile Image" src={profileInfo.photo || 'https://www.cmcaindia.org/wp-content/uploads/2015/11/default-profile-picture-gmail-2.png'} className={classes.avatar} />
             <Button
               style={{
@@ -176,7 +213,7 @@ function Profile(props) {
       <CssBaseline />
       <NavBar name={profileInfo.firstName} />
       {isLoading === true ? isLoadingProfile : onLoadingProfile}
-      <FormModal open={open} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} />
+      <FormModal open={open} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} setFormData={setFormData} formData={formData} setImage={setImage} />
     </>
   );
 }

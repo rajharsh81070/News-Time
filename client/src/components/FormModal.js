@@ -51,7 +51,7 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 function FormModal(props) {
-  const { open, handleClose, handleChange, handleSubmit } = props;
+  const { open, handleClose, handleChange, handleSubmit, setFormData, formData, setImage } = props;
   // const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -64,11 +64,20 @@ function FormModal(props) {
           Update Profile
         </DialogTitle>
         <Divider />
-        <form onChange={handleChange} onSubmit={handleSubmit}>
+        <form onChange={handleChange} onSubmit={handleSubmit} enctype="multipart/form-data">
           <DialogContent>
             <label for="photo" class="mt-3">Photo: </label>
-            <input type="file" class="form-control mt-1" name="photo" placeholder="Insert a picture"
-              accept="image/*" />
+            <input type="file" name="photo"
+              placeholder="Insert a picture"
+              accept="image/*"
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                // console.log(event.target.files[0]);
+                const updatedData = { ...formData, [target.name]: target.files[0] };
+                setImage(updatedData)
+              }}
+            />
             <TextField
               margin="dense"
               fullWidth
@@ -76,6 +85,12 @@ function FormModal(props) {
               variant="outlined"
               id="firstName"
               label="First Name"
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
             <TextField
               margin="dense"
@@ -84,6 +99,12 @@ function FormModal(props) {
               id="lastName"
               label="Last Name"
               fullWidth
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
             <TextField
               margin="dense"
@@ -92,6 +113,12 @@ function FormModal(props) {
               id="country"
               label="Country"
               fullWidth
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
             <TextField
               margin="dense"
@@ -100,6 +127,12 @@ function FormModal(props) {
               id="state"
               label="State"
               fullWidth
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
             <TextField
               margin="dense"
@@ -108,6 +141,12 @@ function FormModal(props) {
               id="city"
               label="City"
               fullWidth
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
             <TextField
               margin="dense"
@@ -116,6 +155,12 @@ function FormModal(props) {
               id="age"
               label="Age"
               fullWidth
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
             <TextField
               margin="dense"
@@ -124,6 +169,12 @@ function FormModal(props) {
               id="phone"
               label="Phone Number"
               fullWidth
+              onChange={(event) => {
+                event.preventDefault();
+                const { target } = event;
+                const updatedData = { ...formData, [target.name]: target.value };
+                setFormData(updatedData);
+              }}
             />
           </DialogContent>
           <DialogActions>

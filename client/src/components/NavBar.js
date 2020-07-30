@@ -105,7 +105,7 @@ function NavBar(props) {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log(search);
+    // console.log(search);
     const searchData = newsStore.getSearchData();
     const updatedData = { ...searchData, qInTitle: search };
     setSearch('');

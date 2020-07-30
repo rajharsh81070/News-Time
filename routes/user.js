@@ -2,6 +2,9 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+// const multiparty = require('multiparty');
+// const cloudinary = require('cloudinary').v2;
+
 // User Model
 const User = require('../model/User');
 
@@ -19,7 +22,7 @@ router.post('/register', async (req, res) => {
 
   // Check if the email is already registered.
   const emailExist = await User.findOne({ email: req.body.email });
-  console.log(emailExist);
+  // console.log(emailExist);
   if (emailExist) return res.status(400).json(
     {
       isValid: true,
@@ -98,7 +101,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/profile', passport.authenticate('jwt', { session: false }),
-  (req, res, next) => {
+  (req, res) => {
     // console.log(req);
     res.json(
       {
@@ -107,6 +110,20 @@ router.get('/profile', passport.authenticate('jwt', { session: false }),
     );
   });
 
-
+router.post('/profile', passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    // console.log(req.body);
+    User.updateOne({ _id: req.user.id }, { $set: req.body }, function (err, result) {
+      if (err) {
+        console.log(err);
+      } else {
+        // console.log(result);
+        res.status(200).json({
+          success: true
+        })
+      }
+    })
+  }
+)
 
 module.exports = router;

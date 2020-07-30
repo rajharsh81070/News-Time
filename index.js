@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const passport = require("passport");
 const cors = require('cors');
+// const cloudinary = require('cloudinary').v2
 
 // Import Routes
 const userRoute = require('./routes/user');
@@ -29,6 +30,13 @@ app.use(passport.initialize());
 
 // Passport config
 require("./config/passport")(passport);
+
+// Cloudinary Settings
+// cloudinary.config({
+//   cloud_name: "dt54gdtmn",
+//   api_key: "548294752167976",
+//   api_secret: "ZvTVqtTYyXWNAQpcy6tjU9rPLWk"
+// })
 
 // Routes Middlewares
 app.use('/news', newsRoute);

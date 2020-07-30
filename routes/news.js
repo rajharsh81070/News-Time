@@ -47,7 +47,7 @@ router.get('/sources', (req, res) => {
     country: req.query.country,
   })
     .then(response => {
-      console.log(response.sources.length)
+      // console.log(response.sources.length)
       res.json(response);
     })
     .catch((e) => {
