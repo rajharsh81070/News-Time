@@ -15,6 +15,9 @@ import userStore from '../stores/userStore';
 import { getProfile } from "../actions/userActions";
 import { toast } from 'react-toastify';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
+import FormModal from './FormModal';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -63,6 +66,29 @@ function Profile(props) {
   const [profileInfo, setProfileInfo] = useState(userStore.getProfile());
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(userStore.getIsLoading());
+  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = useState({});
+
+  function handleChange(event) {
+    event.preventDefault();
+    const { target } = event;
+    const updatedData = { ...formData, [target.name]: target.value };
+    setFormData(updatedData);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log(formData);
+  }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   useEffect(() => {
     userStore.addChangeListener(onChange);
@@ -91,8 +117,22 @@ function Profile(props) {
     <Container style={{ paddingTop: '90px', paddingBlockEnd: '381px' }} component="main" maxWidth="md">
       <Paper className={classes.paper} variant="elevation" elevation={24}>
         <Grid className={classes.grid} >
-          <Grid style={{ alignSelf: 'center' }} item>
-            <Avatar alt="Remy Sharp" src={profileInfo.image || 'https://www.cmcaindia.org/wp-content/uploads/2015/11/default-profile-picture-gmail-2.png'} className={classes.avatar} />
+          <Grid style={{ alignSelf: 'center', display: 'flex', flexDirection: 'row' }} item>
+            <Avatar alt="Profile Image" src={profileInfo.photo || 'https://www.cmcaindia.org/wp-content/uploads/2015/11/default-profile-picture-gmail-2.png'} className={classes.avatar} />
+            <Button
+              style={{
+                height: 'max-content',
+                border: 'none',
+                padding: '20px 0px 20px 0px',
+                display: 'inline-block',
+                borderRadius: '50%'
+              }}
+              variant="outlined"
+              color="secondary"
+              startIcon={<EditIcon />}
+              size="large"
+              onClick={handleOpen}
+            />
           </Grid>
           <Grid className={classes.textField} item xs>
             <Typography style={{ marginTop: '30px', background: 'rgb(231, 231, 231)', borderRadius: '6px', width: '90%', marginBottom: '9px' }} color="inherit" variant='h5'>
@@ -136,6 +176,7 @@ function Profile(props) {
       <CssBaseline />
       <NavBar name={profileInfo.firstName} />
       {isLoading === true ? isLoadingProfile : onLoadingProfile}
+      <FormModal open={open} handleClose={handleClose} handleChange={handleChange} handleSubmit={handleSubmit} />
     </>
   );
 }

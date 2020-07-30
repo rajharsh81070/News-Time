@@ -1,59 +1,141 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import {
+  // makeStyles, 
+  withStyles
+} from '@material-ui/core/styles';
+import {
+  Divider,
+} from "@material-ui/core";
+// import Modal from '@material-ui/core/Modal';
+// import Backdrop from '@material-ui/core/Backdrop';
+// import Fade from '@material-ui/core/Fade';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+// import DialogContentText from '@material-ui/core/DialogContentText';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
   },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
   },
-}));
+});
+
+const DialogTitle = withStyles(styles)((props) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
 
 function FormModal(props) {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const { open, handleClose, handleChange, handleSubmit } = props;
+  // const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        react-transition-group
-      </button>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">react-transition-group animates me.</p>
-          </div>
-        </Fade>
-      </Modal>
+      <Dialog fullScreen={fullScreen} open={open} onClose={handleClose} aria-labelledby="profile-dialog-title">
+        <DialogTitle id="profile-dialog-title" onClose={handleClose}>
+          Update Profile
+        </DialogTitle>
+        <Divider />
+        <form onChange={handleChange} onSubmit={handleSubmit}>
+          <DialogContent>
+            <label for="photo" class="mt-3">Photo: </label>
+            <input type="file" class="form-control mt-1" name="photo" placeholder="Insert a picture"
+              accept="image/*" />
+            <TextField
+              margin="dense"
+              fullWidth
+              name="firstName"
+              variant="outlined"
+              id="firstName"
+              label="First Name"
+            />
+            <TextField
+              margin="dense"
+              name="lastName"
+              variant="outlined"
+              id="lastName"
+              label="Last Name"
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              name="country"
+              variant="outlined"
+              id="country"
+              label="Country"
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              name="state"
+              variant="outlined"
+              id="state"
+              label="State"
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              name="city"
+              variant="outlined"
+              id="city"
+              label="City"
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              name="age"
+              variant="outlined"
+              id="age"
+              label="Age"
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              name="phone"
+              variant="outlined"
+              id="phone"
+              label="Phone Number"
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="outlined" onClick={handleClose} color="primary">
+              Cancel
+          </Button>
+            <Button type="submit" color="secondary" variant="outlined">
+              Submit
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }
