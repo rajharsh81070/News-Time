@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const keys = require('../config/key.json');
 // const multiparty = require('multiparty');
 // const cloudinary = require('cloudinary').v2;
 
@@ -90,7 +91,7 @@ router.post('/login', async (req, res) => {
   };
 
   // Assign a token.
-  const token = jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 31556926 });
+  const token = jwt.sign(payload, keys.TOKEN_SECRET, { expiresIn: 31556926 });
   // res.json(token);
   res.header('token', token).json(
     {

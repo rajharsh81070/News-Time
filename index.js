@@ -1,20 +1,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const passport = require("passport");
 const cors = require('cors');
+const keys = require('./config/key.json');
 // const cloudinary = require('cloudinary').v2
 
 // Import Routes
 const userRoute = require('./routes/user');
 const newsRoute = require('./routes/news');
 
-dotenv.config();
-
 const app = express();
 
 // Connect to DB
-mongoose.connect(process.env.DB_CONNECT,
+mongoose.connect(keys.DB_CONNECT,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, },
   () => {
     console.log('Connected to DB!');

@@ -130,7 +130,7 @@ function HomePage(props) {
               .map((article, index) => {
                 return (
                   <div key={index} style={{ paddingBottom: '30px' }}>
-                    {console.log(index)}
+                    {/* {console.log(index)} */}
                     <NewsCard article={article} isAuthenticated={isAuthenticated} />
                   </div>
                 );
