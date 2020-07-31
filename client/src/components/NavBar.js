@@ -156,11 +156,6 @@ function NavBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  // const handleBookmarkClick = (event) => {
-  //   event.preventDefault();
-  //   props.history.push('/bookmark');
-  // }
-
   const drawer = (
     <div style={{ paddingTop: '30px' }}>
       <List aria-label="category">
@@ -225,12 +220,6 @@ function NavBar(props) {
         </NavLink>
       </MenuItem>
       <Divider />
-      <MenuItem>
-        <NavLink to="/bookmark" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
-          Bookmark
-        </NavLink>
-      </MenuItem>
-      <Divider />
       <MenuItem onClick={onLogoutClick}>
         <div style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
           Logout
@@ -280,12 +269,6 @@ function NavBar(props) {
         <MenuItem>
           <NavLink to="/profile" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
             Profile
-        </NavLink>
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <NavLink to="/bookmark" style={{ fontSize: 21, padding: theme.spacing(0, 1), color: 'inherit', textDecoration: 'inherit' }}>
-            Bookmark
         </NavLink>
         </MenuItem>
         <Divider />

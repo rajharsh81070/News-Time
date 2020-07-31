@@ -30,7 +30,6 @@ function removeUser() {
 let _errors = {};
 let _user = {};
 let isLoading = true;
-let bookmarks = [];
 
 class UserStore extends EventEmitter {
   addChangeListener(callback) {
@@ -72,9 +71,6 @@ class UserStore extends EventEmitter {
     return isLoading;
   }
 
-  getBookmarks() {
-    return bookmarks;
-  }
 }
 
 const store = new UserStore();
@@ -82,7 +78,7 @@ const store = new UserStore();
 Dispatcher.register(action => {
   switch (action.actionType) {
     case actionTypes.LOGIN_USER:
-      debugger;
+      // debugger;
       // console.log(action.token);
       const authToken = action.token.token;
       const decoded = jwt_decode(authToken);
@@ -119,11 +115,6 @@ Dispatcher.register(action => {
       _user.phone = action.user.phone;
       isLoading = false;
       updateName(action.user.firstName);
-      store.emitChange();
-      break;
-    case actionTypes.GET_BOOKMARKS:
-      isLoading = false;
-      bookmarks.push(...action.bookmarks);
       store.emitChange();
       break;
     default:

@@ -33,9 +33,6 @@ const userSchema = new mongoose.Schema({
   city: {
     type: String
   },
-  bookmark: {
-    type: []
-  },
   interests: {
     type: []
   },

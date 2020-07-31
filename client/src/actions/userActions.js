@@ -43,7 +43,7 @@ export function loginUser(data) {
   return fetch('http://localhost:5000/user/login', requestOptions)
     .then(data => data.json())
     .then(user => {
-      debugger;
+      // debugger;
       if (user.success) {
         dispatcher.dispatch({
           actionType: actionTypes.LOGIN_USER,
@@ -115,27 +115,6 @@ export function updateProfile(data) {
     .then(data => data.json())
     .then(res => {
       return res.success;
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
-
-export function getBookmarks() {
-  const requestOptions = {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Authorization': localStorage.getItem('token'),
-    },
-  };
-  return fetch('http://localhost:5000/user/bookmarks', requestOptions)
-    .then(data => data.json())
-    .then(res => {
-      dispatcher.dispatch({
-        actionType: actionTypes.GET_BOOKMARKS,
-        bookmarks: res.bookmarks,
-      })
     })
     .catch(err => {
       console.log(err);

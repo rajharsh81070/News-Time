@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import HomePage from './HomePage';
 import Profile from './Profile';
 import Footer from './Footer';
-import Bookmark from './Bookmark';
 // import userStore from '../stores/userStore';
 
 function App() {
@@ -28,7 +27,6 @@ function App() {
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />
           <Route path="/profile" exact component={Profile} />
-          <Route path="/bookmark" exact component={Bookmark} />
         </Switch>
         <Footer />
       </>

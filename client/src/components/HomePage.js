@@ -29,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
 
 function HomePage(props) {
   const classes = useStyles();
-
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
   const [data] = useState(newsStore.getData());
   const [name] = useState(userStore.getName());
   const [news, setNews] = useState(newsStore.getNews());
   const [isLoading, setIsLoading] = useState(newsStore.getLoading());
+  const [isAuthenticated, setIsAuthenticated] = useState(userStore.isAuthenticated());
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -73,6 +73,7 @@ function HomePage(props) {
   function onChange() {
     setNews(newsStore.getNews());
     setIsLoading(newsStore.getLoading());
+    setIsAuthenticated(userStore.isAuthenticated());
   }
 
   const isLoadingContainer = (
@@ -129,7 +130,8 @@ function HomePage(props) {
               .map((article, index) => {
                 return (
                   <div key={index} style={{ paddingBottom: '30px' }}>
-                    <NewsCard article={article} />
+                    {console.log(index)}
+                    <NewsCard article={article} isAuthenticated={isAuthenticated} />
                   </div>
                 );
               })

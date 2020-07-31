@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
@@ -10,10 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import TimeAgo from 'timeago-react';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-// import FavoriteIcon from '@material-ui/icons/Favorite';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ShareModal from './ShareModal';
-import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +67,7 @@ function NewsCard(props) {
   // const theme = useTheme();
   const { article } = props;
   const dateTime = article.publishedAt.split('T').join(' ');
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const titleFunc = (title) => {
     if (title && title.length !== 0) {
@@ -124,9 +122,6 @@ function NewsCard(props) {
         </Typography>
       </CardContent>
       <CardActions disableSpacing={true}>
-        <IconButton className={classes.controls} aria-label="add to bookmark">
-          <BookmarkBorderIcon />
-        </IconButton>
         <IconButton onClick={handleClickOpen} className={classes.controls} aria-label="share">
           <ShareIcon />
         </IconButton>
@@ -168,9 +163,6 @@ function NewsCard(props) {
           </Typography>
         </CardContent>
         <CardActions style={{ paddingTop: '0', margin: '0' }}>
-          <IconButton edge='end' size='small' className={classes.controlsMobile} aria-label="add to bookmark">
-            <BookmarkBorderIcon />
-          </IconButton>
           <IconButton onClick={handleClickOpen} edge='end' className={classes.controlsMobile} component="span" aria-label="share">
             <ShareIcon />
           </IconButton>

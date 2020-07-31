@@ -126,11 +126,4 @@ router.post('/profile', passport.authenticate('jwt', { session: false }),
   }
 )
 
-router.get('/bookmarks', passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    res.status(200).json({
-      bookmarks: req.user.bookmark
-    })
-  })
-
 module.exports = router;
