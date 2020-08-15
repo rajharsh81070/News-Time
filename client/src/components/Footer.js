@@ -1,22 +1,22 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
+// import Link from '@material-ui/core/Link';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="inherit" >
-      {'Copyright © '}
-      <Link color="inherit" href="https://rajharsh81070.github.io/My-Portfolio/">
-        Harsh Raj
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+// function Copyright() {
+//   return (
+//     <Typography variant="body2" color="inherit" >
+//       {'Copyright © '}
+//       <Link color="inherit" href="https://rajharsh81070.github.io/My-Portfolio/">
+//         Harsh Raj
+//       </Link>{' '}
+//       {new Date().getFullYear()}
+//       {'.'}
+//     </Typography>
+//   );
+// }
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,12 +25,17 @@ const useStyles = makeStyles((theme) => ({
     // minHeight: '60vh',
   },
   footer: {
-    padding: '9px 24px 36px',
+    padding: '3px 24px 36px',
     width: '100%',
     marginTop: 'auto',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[800],
   },
+  contain: {
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '100%',
+    },
+  }
 }));
 
 export default function Footer() {
@@ -40,8 +45,8 @@ export default function Footer() {
     <div className={classes.root}>
       <CssBaseline />
       <footer className={classes.footer}>
-        <Container maxWidth="lg">
-          <div style={{ textAlignLast: 'end', fontSize: 'large', padding: '18px 0px 63px ' }}>
+        <Container className={classes.contain} maxWidth="lg">
+          <div style={{ textAlignLast: 'end', fontSize: 'large', padding: '3px 0px 63px ' }}>
             <p style={{ marginBottom: '9px' }} >You can follow me on:</p>
             <a
               target="_blank"

@@ -12,6 +12,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ShareModal from './ShareModal';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 function NewsCard(props) {
   const classes = useStyles();
   // const theme = useTheme();
-  const { article } = props;
+  const { article, isAuthenticated } = props;
   const dateTime = article.publishedAt.split('T').join(' ');
   const [open, setOpen] = useState(false);
 
@@ -81,7 +82,11 @@ function NewsCard(props) {
   }
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (isAuthenticated) {
+      setOpen(true);
+    } else {
+      toast.info("Please Login");
+    }
   };
 
   const handleClose = () => {
@@ -126,7 +131,6 @@ function NewsCard(props) {
           <ShareIcon />
         </IconButton>
       </CardActions>
-      {/* </div> */}
     </Card >
   );
 
