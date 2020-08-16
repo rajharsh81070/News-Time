@@ -10,7 +10,7 @@ export function registerUser(data) {
     },
     body: JSON.stringify(data)
   };
-  return fetch('http://localhost:5000/user/register', requestOptions)
+  return fetch('/user/register', requestOptions)
     .then(data => data.json())
     .then(data => {
       if (!data.success) {
@@ -40,7 +40,7 @@ export function loginUser(data) {
     },
     body: JSON.stringify(data)
   };
-  return fetch('http://localhost:5000/user/login', requestOptions)
+  return fetch('/user/login', requestOptions)
     .then(data => data.json())
     .then(user => {
       // debugger;
@@ -77,7 +77,7 @@ export function getProfile() {
       'Authorization': localStorage.getItem('token'),
     }
   };
-  return fetch('http://localhost:5000/user/profile', requestOptions)
+  return fetch('/user/profile', requestOptions)
     .then(data => {
       if (!data.ok) {
         dispatcher.dispatch({
@@ -111,7 +111,7 @@ export function updateProfile(data) {
     },
     body: JSON.stringify(data)
   };
-  return fetch('http://localhost:5000/user/profile', requestOptions)
+  return fetch('/user/profile', requestOptions)
     .then(data => data.json())
     .then(res => {
       return res.success;

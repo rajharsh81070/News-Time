@@ -10,7 +10,7 @@ export async function topHeadlines(params) {
     method: 'GET',
     mode: 'cors',
   };
-  const response = await fetch('http://localhost:5000/news/topheadlines?' + query, requestOptions);
+  const response = await fetch('/news/topheadlines?' + query, requestOptions);
   let news = await response.json();
   if (params.category)
     news.category = params.category;
@@ -33,7 +33,7 @@ export async function searchArticles(params) {
     mode: 'cors',
   };
 
-  const response = await fetch('http://localhost:5000/news/everything?' + query, requestOptions);
+  const response = await fetch('/news/everything?' + query, requestOptions);
   let news = await response.json(); news.category = `Search results for ${params.qInTitle}`;
   // console.log(news);
   AppDispatcher.dispatch({
