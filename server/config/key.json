@@ -1,4 +1,4 @@
 {
-  "DB_CONNECT": "mongodb+srv://news-times-server:LjeMBs8W9iMa3fso@cluster0-ulktj.mongodb.net/users?retryWrites=true&w=majority",
-  "TOKEN_SECRET": "hfklsadfhskdhfshkh"
+  "DB_CONNECT": "",
+  "TOKEN_SECRET": ""
 }

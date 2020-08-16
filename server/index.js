@@ -2,8 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require("passport");
 const cors = require('cors');
-const keys = require('./config/key.json');
+// const keys = require('./config/key.json');
+const dotenv = require('dotenv');
 // const cloudinary = require('cloudinary').v2
+
+dotenv.config();
 
 // Import Routes
 const userRoute = require('./routes/user');
@@ -12,7 +15,7 @@ const newsRoute = require('./routes/news');
 const app = express();
 
 // Connect to DB
-mongoose.connect(keys.DB_CONNECT,
+mongoose.connect(process.env.DB_CONNECT,
   { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, },
   () => {
     console.log('Connected to DB!');
