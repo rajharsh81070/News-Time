@@ -4,7 +4,10 @@
   "description": "News time server",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server/index.js",
+    "backend": "nodemon server/index.js",
+    "frontend": "npm run start --prefix client",
+    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Harsh-raj",
@@ -22,6 +25,7 @@
     "validator": "^13.1.1"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "nodemon": "^2.0.4"
   }
 }
