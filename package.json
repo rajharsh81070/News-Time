@@ -4,7 +4,7 @@
   "description": "News time server",
   "main": "index.js",
   "engine": {
-    "node": "16.15.1",
+    "node": "16.20.1",
     "npm": "8.x"
   },
   "scripts": {
