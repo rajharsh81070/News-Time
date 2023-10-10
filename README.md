@@ -44,7 +44,7 @@ You should have [Node.js](https://nodejs.org/en/) and [Git](https://git-scm.com/
    npm run dev
    ```
 
-Facing issues? Feel free to contact at [rajharsh81070.github.io/My-Portfolio/](https://rajharsh81070.github.io/My-Portfolio/#contact).
+Facing issues? Feel free to contact at [rajharsh81070.github.io/My-Portfolio/](https://rajharsh81070.github.io/#contact).
 
 ## Features 📋
 
