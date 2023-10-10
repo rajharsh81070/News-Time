@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "News time server",
   "main": "index.js",
-  "engine": {
+  "engines": {
     "node": "16.20.1",
     "npm": "8.x"
   },
